@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>YoArreglo</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 440px;
+    margin: 80px auto;
+    padding: 0 24px;
+    color: #1F2A2E;
+    text-align: center;
+    background: #F8F8F6;
+  }
+  .brand {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3D8B7D;
+    letter-spacing: 0.2px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 36px 28px 32px;
+    box-shadow: 0 2px 8px rgba(31,42,46,0.05);
+  }
+  .icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 26px;
+    background: #EEF6F3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .icon.warn { background: #FCF3E1; }
+  h1 { font-size: 22px; margin: 0 0 10px; }
+  p { font-size: 15px; line-height: 1.55; color: #6B7B80; margin: 0; }
+  a { color: #3D8B7D; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="brand">YoArreglo</div>
+
+  <div class="card">
+    <div class="icon" id="icon">
+      <svg id="icon-ok" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3D8B7D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <svg id="icon-warn" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E0A22E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="12.5"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
+    </div>
+    <h1 id="title">¡Todo listo!</h1>
+    <p id="message">Tu correo fue confirmado. Regresa a la app YoArreglo e inicia sesión para continuar.</p>
+  </div>
+
+<script>
+  // Supabase redirects here (the project's Site URL) after an auth email link
+  // is clicked, with the outcome in the URL fragment: `type=signup|recovery|…`
+  // on success, or `error_code=…` when the link is expired or already used.
+  var params = new URLSearchParams(window.location.hash.slice(1) || window.location.search.slice(1));
+  var type = params.get('type');
+  var errorCode = params.get('error_code') || params.get('error');
+
+  function show(title, message, warn) {
+    document.getElementById('title').textContent = title;
+    document.getElementById('message').innerHTML = message;
+    if (warn) {
+      document.getElementById('icon').className = 'icon warn';
+      document.getElementById('icon-ok').hidden = true;
+      document.getElementById('icon-warn').hidden = false;
+    }
+  }
+
+  if (errorCode) {
+    show('Enlace no válido',
+      'Este enlace expiró o ya fue utilizado. Abre la app YoArreglo y solicita uno nuevo.',
+      true);
+  } else if (type === 'recovery') {
+    show('Restablecer contraseña',
+      'Por ahora no es posible cambiar tu contraseña desde este enlace. Si necesitas ayuda para acceder a tu cuenta, escríbenos a <a href="mailto:contacto@yoarreglo.com">contacto@yoarreglo.com</a>.',
+      true);
+  }
+
+  // The fragment carries a live session token for the user — don't leave it
+  // sitting in the address bar or browser history.
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname);
+  }
+</script>
+</body>
+</html>
