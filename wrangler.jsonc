@@ -1,0 +1,11 @@
+{
+  "name": "handyman-policies",
+  "compatibility_date": "2025-09-01",
+  // Static site only — no Worker script. Files listed in .assetsignore
+  // (repo metadata, config) are never published.
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}
