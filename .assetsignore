@@ -3,4 +3,3 @@
 .assetsignore
 .wrangler
 wrangler.jsonc
-vercel.json
